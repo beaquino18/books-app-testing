@@ -84,7 +84,8 @@ def create_genre():
 
 @main.route('/book/<book_id>', methods=['GET', 'POST'])
 def book_detail(book_id):
-    book = Book.query.get(book_id)
+    # Book.query.get(book_id) is changed to this. The Query.get() emethod is considered legacy by SQL Alchemy
+    book = db.session.get(Book, book_id)
     form = BookForm(obj=book)
     
     # if form was submitted and contained no errors
@@ -112,7 +113,8 @@ def profile(username):
 @main.route('/favorite/<book_id>', methods=['POST'])
 @login_required
 def favorite_book(book_id):
-    book = Book.query.get(book_id)
+    # Book.query.get(book_id) is changed to this. The Query.get() emethod is considered legacy by SQL Alchemy
+    book = db.session.get(Book, book_id)
     if book in current_user.favorite_books:
         flash('Book already in favorites.')
     else:
@@ -126,7 +128,8 @@ def favorite_book(book_id):
 @main.route('/unfavorite/<book_id>', methods=['POST'])
 @login_required
 def unfavorite_book(book_id):
-    book = Book.query.get(book_id)
+    # Book.query.get(book_id) is changed to this. The Query.get() emethod is considered legacy by SQL Alchemy
+    book = db.session.get(Book, book_id)
     if book not in current_user.favorite_books:
         flash('Book not in favorites.')
     else:
